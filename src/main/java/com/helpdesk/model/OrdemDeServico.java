@@ -18,6 +18,7 @@ public class OrdemDeServico extends Ticket {
 
 	private static final long serialVersionUID = 1L;
 	
+	@Column(nullable = true)
 	@OneToMany(mappedBy = "ordemDeServico", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Atividade> atividade = new ArrayList<>();
 	

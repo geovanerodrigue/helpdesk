@@ -8,16 +8,21 @@ import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.helpdesk.enums.PrioridadeChamado;
@@ -40,14 +45,16 @@ public abstract class Ticket implements Serializable {
 	@Column(nullable = false)
 	private Date datainicio;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private Date datafinal;
 	
 	//corrigir mapeamento
+	@Column(nullable = true)
 	@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<TextoChamado> textoChamado = new ArrayList<>();
 	
-	@Column(nullable = false)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "descricao_id", nullable = false)
     private TextoChamado descricao;
 	
 	@Column(nullable = false)
@@ -59,10 +66,12 @@ public abstract class Ticket implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private PrioridadeChamado prioridade;
 	
-	@Column(nullable = false)
+	@ManyToOne
+	@JoinColumn(name = "solicitante_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "solicitante_fk"))
 	private Pessoa solicitante;
 	
-	@Column(nullable = false)
+	@ManyToOne
+	@JoinColumn(name = "tecnico_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "tecnico_fk"))
 	private Pessoa tecnico;
 	
 

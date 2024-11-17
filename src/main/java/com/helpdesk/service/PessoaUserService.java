@@ -32,34 +32,35 @@ public class PessoaUserService {
 	private JdbcTemplate jdbcTemplate;
 
 	public Pessoa salvarPessoa(Pessoa pessoa) {
-		//juridica = pesssoaRepository.save(juridica);
 
 
 			pessoa = pessoaRepository.save(pessoa);
 
-			Usuario usuario = usuarioRepository.findUserByPessoa(pessoa.getId(), pessoa.getEmail());
+			Usuario usuarioSave = usuarioRepository.findUserByPessoa(pessoa.getId(), pessoa.getEmail());
 
-			if (usuario == null) {
+			if (usuarioSave == null) {
 
 				String constraint = usuarioRepository.consultaConstraintAcesso();
 				if (constraint != null) {
 					jdbcTemplate.execute("begin; alter table usuarios_acesso drop constraint " + constraint +"; commit;");
 				}
 
-				usuario = new Usuario();
-				usuario.setDataAtualSenha(Calendar.getInstance().getTime());
-				usuario.setEmpresa(pessoa.getEmpresa());
-				usuario.setPessoa(pessoa);
-				usuario.setLogin(pessoa.getEmail());
+				usuarioSave = new Usuario();
+				usuarioSave.setDataAtualSenha(Calendar.getInstance().getTime());
+				usuarioSave.setEmpresa(pessoa.getEmpresa());
+				usuarioSave.setPessoa(pessoa);
+				usuarioSave.setLogin(pessoa.getEmail());
 
-				String senha = "" + Calendar.getInstance().getTimeInMillis();
+				String senha = pessoa.getSenhaUsuario();
 				String senhaCript = new BCryptPasswordEncoder().encode(senha);
 
-				usuario.setSenha(senhaCript);
+				usuarioSave.setSenha(senhaCript);
+				
+		
+				//erro ta aqui
+				usuarioSave = usuarioRepository.save(usuarioSave);
 
-				usuario = usuarioRepository.save(usuario);
-
-				usuarioRepository.insereAcessoUser(usuario.getId());
+				usuarioRepository.insereAcessoUser(usuarioSave.getId());
 
 				StringBuilder menssagemHtml = new StringBuilder();
 
@@ -78,5 +79,12 @@ public class PessoaUserService {
 
 			return pessoa;
 		}
+	
+/*
+	public Usuario salvarPessoaEmpresa(Usuario usuario) {
+		usuario.getEmpresa();
+		
+	}
+	*/
 
 }

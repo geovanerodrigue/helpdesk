@@ -36,12 +36,12 @@ public class TextoChamado implements Serializable {
 	@Column(nullable = false)
 	private String texto;
 	
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "ticket_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "ticket_fk"))
+    @ManyToOne
+    @JoinColumn(name = "ticket_id")
 	private Ticket ticket;
 	
-	@OneToMany(mappedBy = "textoChamado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@Column(nullable = true)
+	@OneToMany(mappedBy = "textoChamado",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Imagens> imagens = new ArrayList<>();
 	
 	@Column(nullable = false)

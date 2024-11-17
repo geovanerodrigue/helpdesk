@@ -17,6 +17,8 @@ public class Atividade extends Ticket {
 
 	private static final long serialVersionUID = 1L;
 
+	
+
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "servico_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "servico_fk"))
@@ -29,6 +31,5 @@ public class Atividade extends Ticket {
 	public void setOrdemDeServico(OrdemDeServico ordemDeServico) {
 		this.ordemDeServico = ordemDeServico;
 	}
-	
  
 }

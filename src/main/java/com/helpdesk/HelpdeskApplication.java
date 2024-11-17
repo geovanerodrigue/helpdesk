@@ -14,7 +14,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @EnableAsync
@@ -24,7 +26,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableJpaRepositories(basePackages = "com.helpdesk.repository")
 @EnableTransactionManagement
 @EnableWebMvc
-public class HelpdeskApplication implements AsyncConfigurer {
+public class HelpdeskApplication implements AsyncConfigurer, WebMvcConfigurer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HelpdeskApplication.class, args);
@@ -48,5 +50,20 @@ public class HelpdeskApplication implements AsyncConfigurer {
 
 		return executor;
 	}
+	
 
+	
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		
+		registry.addMapping("/**")
+		.allowedOrigins("*")
+		.allowedHeaders("*")
+		.allowedMethods("*")
+		.exposedHeaders("*");
+		
+		//WebMvcConfigurer.super.addCorsMappings(registry);
+	}
+
+	
 }

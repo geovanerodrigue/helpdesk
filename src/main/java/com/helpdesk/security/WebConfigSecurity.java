@@ -33,8 +33,8 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter implements H
 
 		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 		.disable().authorizeRequests().antMatchers("/").permitAll()
-		.antMatchers("/index").permitAll()
-		.antMatchers(HttpMethod.POST, "/notificacaoapiv2").permitAll()
+		.antMatchers("/index", "/recuperarSenha").permitAll()
+		.antMatchers(HttpMethod.POST, "/notificacaoapiv2", "/recuperarSenha").permitAll()
 		.antMatchers(HttpMethod.GET, "/notificacaoapiv2").permitAll()
 		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
@@ -64,11 +64,13 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter implements H
 		web.ignoring().
 	    antMatchers(HttpMethod.GET, "/notificacaoapiv2","/resources/**",
 	    		"/static/**","/templates/**","classpath:/static/**","classpath:/resources/**",
-	    		"classpath:/templates/**","/webjars/**","/WEB-INF/classes/static/**","/recuperarSenha","/criaAcesso")
+	    		"classpath:/templates/**","/webjars/**","/WEB-INF/classes/static/**",
+	    		"/recuperarSenha","/criaAcesso", "/recuperarSenha")
 	   .antMatchers(HttpMethod.POST, "/notificacaoapiv2",
 			   "/resources/**","/static/**","/templates/**",
 			   "classpath:/static/**","classpath:/resources/**","classpath:/templates/**",
-			   "/webjars/**","/WEB-INF/classes/static/**","/recuperarSenha","/criaAcesso");
+			   "/webjars/**","/WEB-INF/classes/static/**",
+			   "/recuperarSenha","/criaAcesso", "/recuperarSenha");
 	}
 
 }
